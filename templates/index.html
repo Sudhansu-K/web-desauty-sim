@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>De_sauty</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js" integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1>DE-SAUTY CAPACITANCE BRIDGE</h1>
+    <div class="tablist">
+        <input type="radio" id="th" name="tablist" checked="checked" class="top">
+        <label class="tbl" for="th">Theory</label>
+        <div class="tab">
+            <h2>THEORY</h2>
+            <p class="pa">The De Sauty Bridge is an instrument used to measure an unknown capacitance in a circuit. It follows the principle of null deflection, making it one of the simplest ways to compare two capacitors. The bridge consists of a standard capacitance, two variable resistors, and the unknown capacitor.
+
+                A balance point is obtained by varying the resistors, helping to find the capacitance value in terms of a known one. However, for capacitors with dielectric loss, a modified version of the bridge is used. It works on alternating current and provides an effective method for precise calculations.
+            </p>
+            <br>
+            <p class="pa">The De Sauty Bridge works on the principle of null deflection, meaning no current flows when it reaches a balanced condition. If the potential across the galvanometer is different, the needle moves, indicating an unbalanced condition. To restore balance, the values of variable resistors must be adjusted carefully. This helps obtain an accurate reading by ensuring the voltage drop follows Kirchhoff’s circuital law. When balanced, the sum of voltages across the individual arms of the bridge circuit becomes zero.
+
+                According to this application, the potential difference across AB is equal to AD, and across BC is equal to CD. When the bridge is balanced, there is no deflection in the galvanometer, meaning all variable components are set precisely. If the balance is disturbed, varying the resistors allows the bridge to return to its original state. This ensures that the drop in potential in a closed loop follows theoretical expectations. The results of this method make the bridge a reliable tool for electrical analysis. You can also read Torque Equation of a DC Motor.
+            </p>
+            <br>
+            <img class="img1" src="\static\De-Sauty-Bridge-removebg-preview.png" >
+            <br>
+            <p class="pa">
+                The De Sauty Bridge helps determine an unknown capacitance (C1) by comparing it with a standard capacitance (C2). It consists of variable resistors (R3, R4) and is arranged in four arms: AB, BC, CD, and AD. The balance of the bridge follows the impedance rule.
+
+At balance condition, the impedance relation is:
+            </p>
+            <img class="img2" src="\static\formula_1-768x226-removebg-preview.png">
+            <p class="pa">
+                Since impedance for a capacitor is given by jωC, substituting values for each arm, we get:  
+            </p>
+            <img class="img2" src="\static\formula_2-768x226-removebg-preview.png">
+            <p class="pa">
+                Rearranging,
+            </p>
+            <img class="img2" src="\static\img3-removebg-preview.png">
+            <p class="pa">
+                Rearranging,
+            </p>
+            <img class="img2" src="\static\img4-removebg-preview.png">
+            <p class="pa">
+                This formula shows how an unknown capacitor can be determined using a balanced condition in the circuit
+            </p>
+        </div>
+        <input type="radio" id="pr" name="tablist" class="top">
+        <label class="tbl" for="pr">Procedure</label>
+        <div class="tab">
+            <h2>PROCEDURE</h2>
+            <p class="pa">
+                Follow the steps to perform the experiment in the simulator:
+            </p>
+            <br>
+            <p class="pa">
+                <ol class="pa">
+                    <li>
+                        First set the Cx value between the range 0.1uF to 1uF.This will be your theoretical value.</li>
+                    <li>
+                        Select R3 value out of 5 available resistance values.</li>
+                    <li>Turn on the simulator and observe the detector to see if there is any current flowing through the branch.</li>
+                    <li>Adjust the R4 value till the current through the branch is zero.</li>
+                    <li>Turn off the Simulator and note down the values of R3,R4 and C2(0.15uF).</li>
+                    <li>Using the fromula find the practical value of Cx and find the error percentage</li>
+                </ol>
+            </p>
+        </div>
+        <input type="radio" id="sim" name="tablist" class="top">
+        <label class="tbl" for="sim">Simulator</label>
+        <div class="tab">
+            <h2>SIMULATOR</h2>
+            <p>
+                <label class="switch">
+                <input type="checkbox" id="chb" onchange="paction()">
+                <span class="slider"></span>
+                <div style="background:rgb(246, 174, 39);width: 315px;height: 50px;">
+                    <p style="font-size: 15px;font-weight: bold;">Current(uA)
+                        <h3 id="meter">0</h3>
+                    </p>
+                </div>
+              </label>
+            </p>
+            <script>
+                var intl=0
+                function paction()
+                {
+                    if(document.getElementById('chb').checked==true)
+                    {
+                        const rs1= document.querySelector("#range1");
+                        rs1.addEventListener("change",()=>{
+                            if(document.getElementById('chb').checked==true){       
+                            $.ajax({
+                            type:"POST",
+                            url:"{{ url_for('csim') }}",
+                            data:{'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value}
+                            })}
+                        })
+
+                        const rs2= document.querySelector("#range2");
+                        rs2.addEventListener("change",()=>{
+                            if(document.getElementById('chb').checked==true){
+                            $.ajax({
+                            type:"POST",
+                            url:"{{ url_for('csim') }}",
+                            data:{'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value}
+                            })}
+                        })
+
+                        const rs3= document.querySelector("#range3");
+                        rs3.addEventListener("change",()=>{
+                            if(document.getElementById('chb').checked==true){
+                            $.ajax({
+                            type:"POST",
+                            url:"{{ url_for('csim') }}",
+                            data:{'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value}
+                            })}
+                        })
+
+                            const rs4= document.querySelector("#range4");
+                            rs4.addEventListener("change",()=>{
+                            if(document.getElementById('chb').checked==true){
+                            $.ajax({
+                            type:"POST",
+                            url:"{{ url_for('csim') }}",
+                            data:{'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value}
+                            })}
+                        })
+
+                        const rs5= document.querySelector("#range5");
+                        rs5.addEventListener("change",()=>{
+                            if(document.getElementById('chb').checked==true){
+                            $.ajax({
+                            type:"POST",
+                            url:"{{ url_for('csim') }}",
+                            data:{'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value}
+                        })}})
+
+                        const rs6= document.querySelector("#range6");
+                        rs6.addEventListener("change",()=>{
+                            if(document.getElementById('chb').checked==true){
+                            $.ajax({
+                            type:"POST",
+                            url:"{{ url_for('csim') }}",
+                            data:{'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value}
+                            })}
+                        })
+
+                        const rs7= document.querySelector("#range7");
+                        rs7.addEventListener("change",()=>{
+                            if(document.getElementById('chb').checked==true){
+                            $.ajax({
+                            type:"POST",
+                            url:"{{ url_for('csim') }}",
+                            data:{'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value}
+                        })}
+                    })
+                            $.ajax({
+                            type:"POST",
+                            url:"{{ url_for('csim') }}",
+                            data:{'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value}
+                            })
+
+                        socket=io();
+                        socket.connect('http://127.0.0.1:5000/');
+                        socket.on('connect',function(){
+                            console.log("connected")
+                        })
+                        socket.on('message',function(msg){
+                            console.log(msg);
+                            document.getElementById("meter").innerHTML = (msg.toFixed(20)*1e6).toFixed(5);
+                        })
+                        
+                    }
+                }
+            </script>
+            <div class="controls">
+                <div class="cv">
+                    <h4>Capacitor Cx(C1) </h4>
+                    <input id="range1" type="range" min="1" max="10" style="padding-left: 40px;">
+                    <span id="rangec">0.1</span>
+                    <label for="range1" style="font-weight:bold ;padding-left: 5px;">uF</label>
+                    <script>
+                        const range = document.getElementById("range1");
+                        const rangeValueDisplay = document.getElementById("rangec");
+                      
+                        // Display initial value
+                        rangeValueDisplay.textContent = range.value/10;
+                      
+                        // Update value on input change
+                        range.addEventListener("input", function() {
+                          rangeValueDisplay.textContent = range.value/10;
+                        });
+                      </script>
+                </div>
+                <div class="cv">
+                    <h4>Resistor R4</h4>
+                    <ul>
+                    <li><input id="range2" type="range" min="0" max="9">
+                    <span id="rangec2">0</span>
+                    <label for="range2" style="font-weight:bold ;padding-left: 20px;">x1</label>
+                    <script>
+                        const range1 = document.getElementById("range2");
+                        const rangeValueDisplay1 = document.getElementById("rangec2");
+                      
+                        // Display initial value
+                        rangeValueDisplay1.textContent = range1.value;
+                      
+                        // Update value on input change
+                        range1.addEventListener("input", function() {
+                          rangeValueDisplay1.textContent = range1.value;
+                        });
+                      </script>
+                      </li>
+
+                    <li>
+                        <input id="range3" type="range" min="0" max="9">
+                        <span id="rangec3">0</span>
+                        <label for="range3" style="font-weight:bold ;padding-left: 20px;">x10E</label>
+                        <script>
+                            const range2 = document.getElementById("range3");
+                            const rangeValueDisplay2 = document.getElementById("rangec3");
+                      
+                            // Display initial value
+                            rangeValueDisplay2.textContent = range2.value;
+                      
+                            // Update value on input change
+                            range2.addEventListener("input", function() {
+                            rangeValueDisplay2.textContent = range2.value;
+                            });
+                        </script>
+                    </li>
+                    <li>
+                        <input id="range4" type="range" min="0" max="9">
+                        <span id="rangec4">0</span>
+                        <label for="range4" style="font-weight:bold ;padding-left: 20px;">x100E</label>
+                        <script>
+                            const range3 = document.getElementById("range4");
+                            const rangeValueDisplay3 = document.getElementById("rangec4");
+                      
+                            // Display initial value
+                            rangeValueDisplay3.textContent = range3.value;
+                      
+                            // Update value on input change
+                            range3.addEventListener("input", function() {
+                            rangeValueDisplay3.textContent = range3.value;
+                            });
+                        </script>
+                    </li>
+                    <li>
+                        <input id="range5" type="range" min="0" max="9">
+                        <span id="rangec5">0</span>
+                        <label for="range5" style="font-weight:bold ;padding-left: 20px;">x1000E</label>
+                        <script>
+                            const range4 = document.getElementById("range5");
+                            const rangeValueDisplay4 = document.getElementById("rangec5");
+                      
+                            // Display initial value
+                            rangeValueDisplay4.textContent = range4.value;
+                      
+                            // Update value on input change
+                            range4.addEventListener("input", function() {
+                            rangeValueDisplay4.textContent = range4.value;
+                            });
+                        </script>
+                    </li>
+                    <li>
+                        <input id="range6" type="range" min="0" max="9">
+                        <span id="rangec6">0</span>
+                        <label for="range6" style="font-weight:bold ;padding-left: 20px;">x2000E</label>
+                        <script>
+                            const range5 = document.getElementById("range6");
+                            const rangeValueDisplay5 = document.getElementById("rangec6");
+                      
+                            // Display initial value
+                            rangeValueDisplay5.textContent = range5.value;
+                      
+                            // Update value on input change
+                            range5.addEventListener("input", function() {
+                            rangeValueDisplay5.textContent = range5.value;
+                            });
+                        </script>
+                    </li>
+                    </ul>
+                </div>
+                <div class="cv">
+                    <h4>Resistor R3</h4>
+                    <input id="range7" type="range" min="0" max="4" style="padding-left: 40px;">
+                        <span id="rangec7">0</span>
+                        <label for="range7" style="font-weight:bold ;padding-left: 30px;">x1000E</label>
+                        <script>
+                            const range6 = document.getElementById("range7");
+                            const rangeValueDisplay6 = document.getElementById("rangec7");
+                      
+                            // Display initial value
+                            rangeValueDisplay6.textContent = range6.value;
+                      
+                            // Update value on input change
+                            range6.addEventListener("input", function() {
+                            rangeValueDisplay6.textContent = range6.value;
+                            });
+                        </script>
+                </div>
+            </div>  
+            <div class="cktd">
+                <img class="fimg" src="\static\De-Sauty-Bridge-removebg-preview.png">
+            </div>
+        </div>
+
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</html>
