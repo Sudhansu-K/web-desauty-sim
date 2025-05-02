@@ -88,87 +88,71 @@ At balance condition, the impedance relation is:
                 var intl=0
                 function paction()
                 {
-                    if(document.getElementById('chb').checked==true)
-                    {
-                        const rs1= document.querySelector("#range1");
-                        rs1.addEventListener("change",()=>{
-                            if(document.getElementById('chb').checked==true){       
-                            $.ajax({
-                            type:"POST",
-                            url:"{{ url_for('csim') }}",
-                            data:{'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value}
-                            })}
-                        })
-
-                        const rs2= document.querySelector("#range2");
-                        rs2.addEventListener("change",()=>{
-                            if(document.getElementById('chb').checked==true){
-                            $.ajax({
-                            type:"POST",
-                            url:"{{ url_for('csim') }}",
-                            data:{'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value}
-                            })}
-                        })
-
-                        const rs3= document.querySelector("#range3");
-                        rs3.addEventListener("change",()=>{
-                            if(document.getElementById('chb').checked==true){
-                            $.ajax({
-                            type:"POST",
-                            url:"{{ url_for('csim') }}",
-                            data:{'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value}
-                            })}
-                        })
-
-                            const rs4= document.querySelector("#range4");
-                            rs4.addEventListener("change",()=>{
-                            if(document.getElementById('chb').checked==true){
-                            $.ajax({
-                            type:"POST",
-                            url:"{{ url_for('csim') }}",
-                            data:{'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value}
-                            })}
-                        })
-
-                        const rs5= document.querySelector("#range5");
-                        rs5.addEventListener("change",()=>{
-                            if(document.getElementById('chb').checked==true){
-                            $.ajax({
-                            type:"POST",
-                            url:"{{ url_for('csim') }}",
-                            data:{'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value}
-                        })}})
-
-                        const rs6= document.querySelector("#range6");
-                        rs6.addEventListener("change",()=>{
-                            if(document.getElementById('chb').checked==true){
-                            $.ajax({
-                            type:"POST",
-                            url:"{{ url_for('csim') }}",
-                            data:{'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value}
-                            })}
-                        })
-
-                        const rs7= document.querySelector("#range7");
-                        rs7.addEventListener("change",()=>{
-                            if(document.getElementById('chb').checked==true){
-                            $.ajax({
-                            type:"POST",
-                            url:"{{ url_for('csim') }}",
-                            data:{'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value}
-                        })}
-                    })
-                            $.ajax({
-                            type:"POST",
-                            url:"{{ url_for('csim') }}",
-                            data:{'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value}
-                            })
-
-                        socket=io();
+                    socket=io();
                         socket.connect('http://127.0.0.1:5000/');
                         socket.on('connect',function(){
                             console.log("connected")
                         })
+
+                    if(document.getElementById('chb').checked==true)
+                    {
+                        const rs1= document.querySelector("#range1");
+                        rs1.addEventListener("change",()=>{
+                            if(document.getElementById('chb').checked==true)
+                            { 
+                                socket.send({'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value})
+                            }
+                        })
+
+                        const rs2= document.querySelector("#range2");
+                        rs2.addEventListener("change",()=>{
+                            if(document.getElementById('chb').checked==true)
+                            {
+                                socket.send({'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value})
+                            }
+                        })
+
+                        const rs3= document.querySelector("#range3");
+                        rs3.addEventListener("change",()=>{
+                            if(document.getElementById('chb').checked==true)
+                            {
+                                socket.send({'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value})
+                            }
+                        })
+
+                            const rs4= document.querySelector("#range4");
+                            rs4.addEventListener("change",()=>{
+                            if(document.getElementById('chb').checked==true)
+                            {
+                                socket.send({'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value})
+                            }
+                        })
+
+                        const rs5= document.querySelector("#range5");
+                        rs5.addEventListener("change",()=>{
+                            if(document.getElementById('chb').checked==true)
+                            {
+                                socket.send({'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value})
+                            }
+                        })
+
+                        const rs6= document.querySelector("#range6");
+                        rs6.addEventListener("change",()=>{
+                            if(document.getElementById('chb').checked==true)
+                            {
+                                socket.send({'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value})
+                            }
+                        })
+
+                        const rs7= document.querySelector("#range7");
+                        rs7.addEventListener("change",()=>{
+                            if(document.getElementById('chb').checked==true)
+                            {
+                                socket.send({'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value})
+                            }
+                        })
+                        socket.send({'r1':rs1.value/10,'r2':rs2.value,'r3':rs3.value,'r4':rs4.value,'r5':rs5.value,'r6':rs6.value,'r7':rs7.value})
+
                         socket.on('message',function(msg){
                             console.log(msg);
                             document.getElementById("meter").innerHTML = (msg.toFixed(20)*1e6).toFixed(5);

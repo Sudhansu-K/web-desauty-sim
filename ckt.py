@@ -20,44 +20,42 @@ socket=SocketIO(app)
 def index():
     return render_template('index.html')
 
-@app.route('/csim', methods=['POST','GET'])
-def csim():
-    if request.method=='POST':
-        print(request.form)
-        cxx=request.form['r1']
-        rr1=float(request.form['r2'])
-        rr2=float(request.form['r3'])
-        rr3=float(request.form['r4'])
-        rr4=float(request.form['r5'])
-        rr5=float(request.form['r6'])
-        rr6=float(request.form['r7'])
-        print(type(cxx))
-        #circuit logic
-        cx=float(cxx)
-        r4=float(rr5*2000+rr4*1000+rr3*100+rr2*10+rr1*1)
-        r3=float(rr6*1000)
-
-        ckt=Circuit("desauty")
-        ckt.SinusoidalVoltageSource('input','n1',ckt.gnd,amplitude=1@u_V,frequency=10000@u_Hz)
-        ckt.C(2,'n1','n3',0.15@u_uF)
-        ckt.C(1,'n1','n2',cx@u_uF)
-        ckt.V(5,'n2','n3',0@u_V)
-        ckt.R(3,'n2',ckt.gnd,r3@u_kOhm) #variable resistor r3
-        ckt.R(4,'n3',ckt.gnd,r4@u_kOhm) #variable resistor r4
-        print(ckt)
-
-        sim=ckt.simulator(temperature=25,nominal_temperature=25)
-        sim.initial_condition(n1=0,n2=0,n3=0)
-        analysis=sim.transient(step_time=1@u_us,end_time=0.1@u_ms)
-        c=pd.DataFrame(analysis.branches.values())
-        cv=float(c.iloc[1,:].max())
-        socket.send(cv)
-        return Response(status=204)
-    
-
         
+
+@socket.on("message")
+def cmessage(cm):
+    print(cm)
+    cxx=cm['r1']
+    rr1=float(cm['r2'])
+    rr2=float(cm['r3'])
+    rr3=float(cm['r4'])
+    rr4=float(cm['r5'])
+    rr5=float(cm['r6'])
+    rr6=float(cm['r7'])
+    print(type(cxx))
+    #circuit logic
+    cx=float(cxx)
+    r4=float(rr5*2000+rr4*1000+rr3*100+rr2*10+rr1*1)
+    r3=float(rr6*1000)
+
+    ckt=Circuit("desauty")
+    ckt.SinusoidalVoltageSource('input','n1',ckt.gnd,amplitude=10@u_V,frequency=10000@u_Hz)
+    ckt.C(2,'n1','n3',0.15@u_uF)
+    ckt.C(1,'n1','n2',cx@u_uF)
+    ckt.V(5,'n2','n3',0@u_V)
+    ckt.R(3,'n2',ckt.gnd,r3@u_kOhm) #variable resistor r3
+    ckt.R(4,'n3',ckt.gnd,r4@u_kOhm) #variable resistor r4
+    print(ckt)
+    sim=ckt.simulator(temperature=25,nominal_temperature=25)
+    sim.initial_condition(n1=0,n2=0,n3=0)
+    analysis=sim.transient(step_time=1@u_us,end_time=0.1@u_ms)
+    c=pd.DataFrame(analysis.branches.values())
+    cv=float(c.iloc[1,:].max())
+    socket.send(cv)
+
 if __name__=='__main__':
-    app.run(
+    socket.run(
+        app=app,
         host='127.0.0.1',
         debug=True, 
         port=5000)
