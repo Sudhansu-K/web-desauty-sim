@@ -10,9 +10,7 @@ import numpy as np
 import pandas as pd
 
 from flask_socketio import SocketIO
-from flask import Flask, render_template,request,Response
-cxx=0;rr1=0;rr2=0;rr3=0;rr4=0;rr5=0;rr6=0;cd=0;
-
+from flask import Flask, render_template
 app=Flask(__name__)
 socket=SocketIO(app)
 
@@ -32,7 +30,7 @@ def cmessage(cm):
     rr4=float(cm['r5'])
     rr5=float(cm['r6'])
     rr6=float(cm['r7'])
-    #print(type(cxx))
+    #print(rr1)
     #circuit logic
     cx=float(cxx)
     r4=float(rr5*2000+rr4*1000+rr3*100+rr2*10+rr1*1)
